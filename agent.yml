@@ -1,0 +1,61 @@
+---
+- name: Configure Puppet Agent 5.x
+  hosts: puppetserver.turbo.local, puppetnode1.turbo.local
+
+  vars:
+    puppet_server: puppetserver.turbo.local
+
+  tasks:
+    - name: Install RPM GPG Keys
+      copy:
+        src: files/RPM-GPG-KEY-{{ item }}
+        dest: /etc/pki/rpm-gpg/RPM-GPG-KEY-{{ item }}
+        owner: root
+        group: root
+        mode: 0644
+      with_items:
+        - EPEL-7
+        - ius
+        - puppet5
+
+    - name: Import RPM GPG Keys
+      shell: rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-*
+      changed_when: "1 == 0"
+
+    - name: Install Repo files
+      copy:
+        src: files/{{ item }}.repo
+        dest: /etc/yum.repos.d/{{ item }}.repo
+        owner: root
+        group: root
+        mode: 0644
+      with_items:
+        - epel
+        - ius
+        - puppet5
+
+    - name: Install dependency packages
+      yum:
+        name: "{{ item }}"
+        state: installed
+        update_cache: True
+      with_items:
+        - git2u-gui
+        - git2u-gitk
+        - tig
+
+    - name: Install Puppet packages
+      yum:
+        name: "{{ item }}"
+        state: installed
+        update_cache: True
+      with_items:
+        - puppet-agent
+
+    - name: Deliver the puppet.conf config
+      template:
+        src: templates/puppet.conf.j2
+        dest: /etc/puppetlabs/puppet/puppet.conf
+        owner: root
+        group: root
+        mode: 0644

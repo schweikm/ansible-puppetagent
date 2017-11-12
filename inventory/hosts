@@ -1,0 +1,8 @@
+[server]
+puppetserver.turbo.local
+
+[db]
+puppetdb.turbo.local
+
+[nodes]
+puppetnode1.turbo.local
