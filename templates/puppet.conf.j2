@@ -14,8 +14,6 @@
   environment = production
   usecacheonfailure = False
 
-  dns_alt_names = {{ ansible_hostname }}, puppet
-
 [agent]
   certname = {{ ansible_fqdn }}
   server = {{ puppet_server }}
