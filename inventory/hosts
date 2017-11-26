@@ -6,3 +6,5 @@ puppetdb.turbo.local
 
 [nodes]
 puppetnode1.turbo.local
+maccentos7.turbo.local
+wincentos7.turbo.local

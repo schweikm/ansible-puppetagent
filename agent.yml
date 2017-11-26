@@ -1,6 +1,6 @@
 ---
 - name: Configure Puppet Agent 5.x
-  hosts: puppetnode1.turbo.local
+  hosts: wincentos7.turbo.local
 
   vars:
     puppet_server: puppetserver.turbo.local
